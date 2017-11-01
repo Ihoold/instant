@@ -7,121 +7,93 @@
 #include "JvmVisitor.hpp"
 
 
+void JvmVisitor::visitProgram(Program *t) {} //abstract class
+void JvmVisitor::visitStmt(Stmt *t) {} //abstract class
+void JvmVisitor::visitExp(Exp *t) {} //abstract class
 
-void Skeleton::visitProgram(Program* t) {} //abstract class
-void Skeleton::visitStmt(Stmt* t) {} //abstract class
-void Skeleton::visitExp(Exp* t) {} //abstract class
+void JvmVisitor::visitProg(Prog *prog) {
+    /* Code For Prog Goes Here */
 
-void Skeleton::visitProg(Prog *prog)
-{
-  /* Code For Prog Goes Here */
-
-  prog->liststmt_->accept(this);
+    prog->liststmt_->accept(this);
 
 }
 
-void Skeleton::visitSAss(SAss *sass)
-{
-  /* Code For SAss Goes Here */
+void JvmVisitor::visitSAss(SAss *sass) {
+    /* Code For SAss Goes Here */
 
-  visitIdent(sass->ident_);
-  sass->exp_->accept(this);
-
-}
-
-void Skeleton::visitSExp(SExp *sexp)
-{
-  /* Code For SExp Goes Here */
-
-  sexp->exp_->accept(this);
+    visitIdent(sass->ident_);
+    sass->exp_->accept(this);
 
 }
 
-void Skeleton::visitExpAdd(ExpAdd *expadd)
-{
-  /* Code For ExpAdd Goes Here */
+void JvmVisitor::visitSExp(SExp *sexp) {
+    /* Code For SExp Goes Here */
 
-  expadd->exp_1->accept(this);
-  expadd->exp_2->accept(this);
+    sexp->exp_->accept(this);
 
 }
 
-void Skeleton::visitExpSub(ExpSub *expsub)
-{
-  /* Code For ExpSub Goes Here */
+void JvmVisitor::visitExpAdd(ExpAdd *expadd) {
+    /* Code For ExpAdd Goes Here */
 
-  expsub->exp_1->accept(this);
-  expsub->exp_2->accept(this);
-
-}
-
-void Skeleton::visitExpMul(ExpMul *expmul)
-{
-  /* Code For ExpMul Goes Here */
-
-  expmul->exp_1->accept(this);
-  expmul->exp_2->accept(this);
+    expadd->exp_1->accept(this);
+    expadd->exp_2->accept(this);
 
 }
 
-void Skeleton::visitExpDiv(ExpDiv *expdiv)
-{
-  /* Code For ExpDiv Goes Here */
+void JvmVisitor::visitExpSub(ExpSub *expsub) {
+    /* Code For ExpSub Goes Here */
 
-  expdiv->exp_1->accept(this);
-  expdiv->exp_2->accept(this);
-
-}
-
-void Skeleton::visitExpLit(ExpLit *explit)
-{
-  /* Code For ExpLit Goes Here */
-
-  visitInteger(explit->integer_);
+    expsub->exp_1->accept(this);
+    expsub->exp_2->accept(this);
 
 }
 
-void Skeleton::visitExpVar(ExpVar *expvar)
-{
-  /* Code For ExpVar Goes Here */
+void JvmVisitor::visitExpMul(ExpMul *expmul) {
+    /* Code For ExpMul Goes Here */
 
-  visitIdent(expvar->ident_);
+    expmul->exp_1->accept(this);
+    expmul->exp_2->accept(this);
+
+}
+
+void JvmVisitor::visitExpDiv(ExpDiv *expdiv) {
+    /* Code For ExpDiv Goes Here */
+
+    expdiv->exp_1->accept(this);
+    expdiv->exp_2->accept(this);
+
+}
+
+void JvmVisitor::visitExpLit(ExpLit *explit) {
+    /* Code For ExpLit Goes Here */
+
+    visitInteger(explit->integer_);
+
+}
+
+void JvmVisitor::visitExpVar(ExpVar *expvar) {
+    /* Code For ExpVar Goes Here */
+
+    visitIdent(expvar->ident_);
 
 }
 
 
-void Skeleton::visitListStmt(ListStmt* liststmt)
-{
-  for (ListStmt::iterator i = liststmt->begin() ; i != liststmt->end() ; ++i)
-  {
-    (*i)->accept(this);
-  }
+void JvmVisitor::visitListStmt(ListStmt *liststmt) {
+    for (auto& el : *liststmt) {
+        el->accept(this);
+    }
 }
 
 
-void Skeleton::visitInteger(Integer x)
-{
-  /* Code for Integer Goes Here */
+void JvmVisitor::visitInteger(Integer x) {
+    /* Code for Integer Goes Here */
 }
 
-void Skeleton::visitChar(Char x)
-{
-  /* Code for Char Goes Here */
-}
+void JvmVisitor::visitIdent(Ident x) {
 
-void Skeleton::visitDouble(Double x)
-{
-  /* Code for Double Goes Here */
-}
-
-void Skeleton::visitString(String x)
-{
-  /* Code for String Goes Here */
-}
-
-void Skeleton::visitIdent(Ident x)
-{
-  /* Code for Ident Goes Here */
+    /* Code for Ident Goes Here */
 }
 
 
