@@ -5,9 +5,9 @@
 /*                                                                          */
 /****************************************************************************/
 #include <stdio.h>
-#include "Parser.H"
-#include "Printer.H"
-#include "Absyn.H"
+#include "Parser.hpp"
+#include "Printer.hpp"
+#include "Absyn.hpp"
 
 int main(int argc, char ** argv)
 {

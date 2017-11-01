@@ -69,7 +69,7 @@
 #include <string.h>
 #include <iostream>
 #include <algorithm>
-#include "Absyn.H"
+#include "Absyn.hpp"
 typedef struct yy_buffer_state *YY_BUFFER_STATE;
 int yyparse(void);
 int yylex(void);
