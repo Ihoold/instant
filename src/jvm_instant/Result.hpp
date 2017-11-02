@@ -7,26 +7,24 @@
 
 #include <string>
 #include <vector>
-#include <unordered_set>
 
 class Result {
     std::vector<std::string> code;
-    std::unordered_set<std::string> vars;
     size_t stackSize = 0;
 public:
-    Result(std::vector<std::string> code, const std::unordered_set<std::string>& vars, size_t stack_size);
+    Result(std::vector<std::string> code, size_t stack_size);
 
     Result() = default;
 
-    const std::unordered_set<std::string>& getVars() const;
-
-    void setVars(const std::unordered_set<std::string>& vars);
+    const std::vector<std::string>& getCode() const;
 
     size_t getStackSize() const;
 
     void setStackSize(size_t stackSize);
 
     Result& concatCode(const std::vector<std::string>&);
+
+    void addCommand(const std::string& command);
 };
 
 

@@ -91,18 +91,6 @@ void Skeleton::visitInteger(Integer x) {
     /* Code for Integer Goes Here */
 }
 
-void Skeleton::visitChar(Char x) {
-    /* Code for Char Goes Here */
-}
-
-void Skeleton::visitDouble(Double x) {
-    /* Code for Double Goes Here */
-}
-
-void Skeleton::visitString(String x) {
-    /* Code for String Goes Here */
-}
-
 void Skeleton::visitIdent(Ident x) {
     /* Code for Ident Goes Here */
 }

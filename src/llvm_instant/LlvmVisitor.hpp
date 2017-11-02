@@ -2,7 +2,7 @@
 #define SKELETON_HEADER
 /* You might want to change the above name. */
 
-#include "Absyn.H"
+#include "Absyn.cpp"
 
 
 class Skeleton : public Visitor {
@@ -34,12 +34,6 @@ public:
     void visitListStmt(ListStmt *p);
 
     void visitInteger(Integer x);
-
-    void visitChar(Char x);
-
-    void visitDouble(Double x);
-
-    void visitString(String x);
 
     void visitIdent(Ident x);
 

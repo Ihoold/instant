@@ -2,11 +2,12 @@
 // Created by ihoold on 01.11.17.
 //
 
+#include <algorithm>
 #include "Result.hpp"
 
 
-Result::Result(std::vector<std::string> code, const std::unordered_set<std::string>& vars, size_t stack_size)
-        : code(std::move(code)), vars(vars), stack_size(stack_size) {}
+Result::Result(std::vector<std::string> code, size_t stackSize)
+        : code(std::move(code)), stackSize(stackSize) {}
 
 Result& Result::concatCode(const std::vector<std::string>& rhs_code) {
     // Concatenate vectors
@@ -14,12 +15,8 @@ Result& Result::concatCode(const std::vector<std::string>& rhs_code) {
     code.insert(code.end(), rhs_code.begin(), rhs_code.end());
 }
 
-const std::unordered_set<std::string>& Result::getVars() const {
-    return vars;
-}
-
-void Result::setVars(const std::unordered_set<std::string>& vars) {
-    Result::vars = vars;
+void Result::addCommand(const std::string& command) {
+    code.push_back(command);
 }
 
 size_t Result::getStackSize() const {
@@ -28,5 +25,9 @@ size_t Result::getStackSize() const {
 
 void Result::setStackSize(size_t stackSize) {
     Result::stackSize = stackSize;
+}
+
+const std::vector<std::string>& Result::getCode() const {
+    return code;
 }
 
