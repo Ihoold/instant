@@ -1,5 +1,5 @@
-#ifndef SKELETON_HEADER
-#define SKELETON_HEADER
+#ifndef JVMVISITOR_HEADER
+#define JVMVISITOR_HEADER
 /* You might want to change the above name. */
 
 #include <Absyn.hpp>
