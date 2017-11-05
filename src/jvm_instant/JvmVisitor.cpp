@@ -163,7 +163,10 @@ void JvmVisitor::visitExpVar(ExpVar *expvar) {
     int i = findVar(expvar->ident_);
     std::string command;
 
-    if(i <= ILOAD_LIMIT) {
+    if(i <= 0) {
+        std::cerr << "Using undeclared variable!" << std::endl;
+        exit(-3);
+    } else if (i <= ILOAD_LIMIT) {
         command = "iload_" + std::to_string(i);
     } else {
         command = "iload " + std::to_string(i);
@@ -211,12 +214,5 @@ int JvmVisitor::findVar(Ident x) {
 }
 
 void JvmVisitor::visitIdent(Ident x) {
-
+    // unused
 }
-
-const Result& JvmVisitor::getCurrentResult() const {
-    return currentResult;
-}
-
-
-

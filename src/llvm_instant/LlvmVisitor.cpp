@@ -1,99 +1,103 @@
-/*** BNFC-Generated Visitor Design Pattern Skeleton. ***/
+/*** BNFC-Generated Visitor Design Pattern LlvmVisitor. ***/
 /* This implements the common visitor design pattern.
    Note that this method uses Visitor-traversal of lists, so
    List->accept() does NOT traverse the list. This allows different
    algorithms to use context information differently. */
 
+#include <iostream>
 #include "LlvmVisitor.hpp"
 
+std::string LlvmVisitor::getFreeId() {
+    return "%i" + std::to_string(idCount++);
+}
 
-void Skeleton::visitProgram(Program *t) {} //abstract class
-void Skeleton::visitStmt(Stmt *t) {} //abstract class
-void Skeleton::visitExp(Exp *t) {} //abstract class
+std::vector<std::string> LlvmVisitor::compile(Visitable* v) {
+    v->accept(this);
+    return code;
+}
 
-void Skeleton::visitProg(Prog *prog) {
-    /* Code For Prog Goes Here */
+void LlvmVisitor::visitProgram(Program *t) {} //abstract class
+void LlvmVisitor::visitStmt(Stmt *t) {} //abstract class
+void LlvmVisitor::visitExp(Exp *t) {} //abstract class
 
+void LlvmVisitor::visitProg(Prog *prog) {
+    code.emplace_back("declare void @printInt(i32)");
+    code.emplace_back("define i32 @main() {");
     prog->liststmt_->accept(this);
-
+    code.emplace_back("ret i32 0");
+    code.emplace_back("}");
 }
 
-void Skeleton::visitSAss(SAss *sass) {
-    /* Code For SAss Goes Here */
-
-    visitIdent(sass->ident_);
+void LlvmVisitor::visitSAss(SAss *sass) {
     sass->exp_->accept(this);
+    auto ptrName = genPtrName(sass->ident_);
+    if (vars.find(sass->ident_) == vars.end()) {
+        code.emplace_back(ptrName + " = alloca i32");
+    }
 
+    code.emplace_back("store i32 " + currentResutlt + ", i32* " + ptrName);
 }
 
-void Skeleton::visitSExp(SExp *sexp) {
-    /* Code For SExp Goes Here */
-
+void LlvmVisitor::visitSExp(SExp *sexp) {
     sexp->exp_->accept(this);
-
+    code.emplace_back("call void @printInt(i32 " + currentResutlt + ")");
 }
 
-void Skeleton::visitExpAdd(ExpAdd *expadd) {
-    /* Code For ExpAdd Goes Here */
+void LlvmVisitor::visitTwoOp(Exp* e1, Exp* e2, const std::string& op) {
+    e1->accept(this);
+    std::string arguments = this->currentResutlt + ", ";
+    e2->accept(this);
+    arguments += this->currentResutlt;
 
-    expadd->exp_1->accept(this);
-    expadd->exp_2->accept(this);
-
+    currentResutlt = getFreeId();
+    code.emplace_back(currentResutlt + " = " + op + arguments);
 }
 
-void Skeleton::visitExpSub(ExpSub *expsub) {
-    /* Code For ExpSub Goes Here */
-
-    expsub->exp_1->accept(this);
-    expsub->exp_2->accept(this);
-
+std::string LlvmVisitor::genPtrName(const std::string& var) {
+    return "%ptr_" + var;
 }
 
-void Skeleton::visitExpMul(ExpMul *expmul) {
-    /* Code For ExpMul Goes Here */
-
-    expmul->exp_1->accept(this);
-    expmul->exp_2->accept(this);
-
+void LlvmVisitor::visitExpAdd(ExpAdd *exp) {
+    visitTwoOp(exp->exp_1, exp->exp_2, "add i32 ");
 }
 
-void Skeleton::visitExpDiv(ExpDiv *expdiv) {
-    /* Code For ExpDiv Goes Here */
-
-    expdiv->exp_1->accept(this);
-    expdiv->exp_2->accept(this);
-
+void LlvmVisitor::visitExpSub(ExpSub *exp) {
+    visitTwoOp(exp->exp_1, exp->exp_2, "sub i32 ");
 }
 
-void Skeleton::visitExpLit(ExpLit *explit) {
-    /* Code For ExpLit Goes Here */
+void LlvmVisitor::visitExpMul(ExpMul *exp) {
+    visitTwoOp(exp->exp_1, exp->exp_2, "mul i32 ");
+}
 
+void LlvmVisitor::visitExpDiv(ExpDiv *exp) {
+    visitTwoOp(exp->exp_1, exp->exp_2, "div i32 ");
+}
+
+void LlvmVisitor::visitExpLit(ExpLit *explit) {
     visitInteger(explit->integer_);
-
 }
 
-void Skeleton::visitExpVar(ExpVar *expvar) {
-    /* Code For ExpVar Goes Here */
-
-    visitIdent(expvar->ident_);
-
-}
-
-
-void Skeleton::visitListStmt(ListStmt *liststmt) {
-    for (ListStmt::iterator i = liststmt->begin(); i != liststmt->end(); ++i) {
-        (*i)->accept(this);
+void LlvmVisitor::visitExpVar(ExpVar *expvar) {
+    if (vars.find(expvar->ident_) != vars.end()) {
+        currentResutlt = getFreeId();
+        code.emplace_back(currentResutlt + " = load i32, i32* " + genPtrName(expvar->ident_));
+    } else {
+        std::cerr << "Using undeclared variable!" << std::endl;
+        exit(-3);
     }
 }
 
 
-void Skeleton::visitInteger(Integer x) {
-    /* Code for Integer Goes Here */
-}
-
-void Skeleton::visitIdent(Ident x) {
-    /* Code for Ident Goes Here */
+void LlvmVisitor::visitListStmt(ListStmt *liststmt) {
+    for (auto& stmt : *liststmt)
+        stmt->accept(this);
 }
 
 
+void LlvmVisitor::visitInteger(Integer x) {
+    currentResutlt = std::to_string(x);
+}
 
+void LlvmVisitor::visitIdent(Ident x) {
+    // unused
+}

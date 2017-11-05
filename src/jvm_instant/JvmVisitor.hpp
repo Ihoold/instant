@@ -1,17 +1,13 @@
-#ifndef JVMVISITOR_HEADER
-#define JVMVISITOR_HEADER
+#ifndef JVM_VISITOR_HEADER
+#define JVM_VISITOR_HEADER
 /* You might want to change the above name. */
 
-#include <Absyn.hpp>
+#include "Absyn.hpp"
 #include <map>
 #include "Result.hpp"
 
 class JvmVisitor : public Visitor {
     Result currentResult;
-public:
-    const Result& getCurrentResult() const;
-
-private:
     std::map<std::string, int> vars;
     int varCount = 1;
 public:

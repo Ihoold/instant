@@ -19,3 +19,6 @@ add_library(LLVMVisitor ${CMAKE_SOURCE_DIR}/src/llvm_instant/LlvmVisitor.cpp)
 
 add_executable(insc_jvm ${CMAKE_SOURCE_DIR}/src/jvm_instant/JvmInstant.cpp)
 target_link_libraries(insc_jvm Parser Printer Lexer Absyn JVMVisitor Result)
+
+add_executable(insc_llvm ${CMAKE_SOURCE_DIR}/src/llvm_instant/LlvmInstant.cpp)
+target_link_libraries(insc_llvm Parser Printer Lexer Absyn LLVMVisitor)
