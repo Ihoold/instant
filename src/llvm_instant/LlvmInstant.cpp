@@ -23,7 +23,7 @@ std::string getDirName(const std::string& path) {
     return path.substr(0, filenameBegin+1);
 }
 
-const std::string RUNTIME_PATH = "../lib/runtime.bc";
+const std::string RUNTIME_PATH = "./lib/runtime.bc";
 
 int main(int argc, char **argv) {
     FILE *input;

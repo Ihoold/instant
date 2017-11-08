@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
                       std::ostream_iterator<std::string>(codeStream, delim));
         }
         std::string jasminCommand =
-                "java -jar ../lib/jasmin.jar -d " + getDirName(path) + " " + jFilePath;
+                "java -jar ./lib/jasmin.jar -d " + getDirName(path) + " " + jFilePath;
 
         system(jasminCommand.data());
         return 0;

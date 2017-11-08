@@ -36,6 +36,7 @@ void LlvmVisitor::visitSAss(SAss *sass) {
     }
 
     code.emplace_back("store i32 " + currentResutlt + ", i32* " + ptrName);
+    vars.insert(sass->ident_);
 }
 
 void LlvmVisitor::visitSExp(SExp *sexp) {
@@ -70,7 +71,7 @@ void LlvmVisitor::visitExpMul(ExpMul *exp) {
 }
 
 void LlvmVisitor::visitExpDiv(ExpDiv *exp) {
-    visitTwoOp(exp->exp_1, exp->exp_2, "div i32 ");
+    visitTwoOp(exp->exp_1, exp->exp_2, "udiv i32 ");
 }
 
 void LlvmVisitor::visitExpLit(ExpLit *explit) {
@@ -82,6 +83,7 @@ void LlvmVisitor::visitExpVar(ExpVar *expvar) {
         currentResutlt = getFreeId();
         code.emplace_back(currentResutlt + " = load i32, i32* " + genPtrName(expvar->ident_));
     } else {
+        std::cerr << expvar->ident_ << std::endl;
         std::cerr << "Using undeclared variable!" << std::endl;
         exit(-3);
     }
